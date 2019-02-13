@@ -1,0 +1,86 @@
+package ${package.Controller};
+
+import org.springframework.http.MediaType;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import ${package.Entity}.${entity};
+import ${package.Service}.${table.serviceName};
+
+
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Api(tags = "$!{table.comment}")
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+
+    @Autowired
+    private ${table.serviceName} service;
+
+    @ApiOperation(value="$!{table.comment} 查询",notes="", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/query/list", method = {RequestMethod.GET, RequestMethod.POST})
+    public R<List<${entity}>> query( ${entity} entity ) throws BusinessException {
+        List<${entity}> dataList = service.selectList(new EntityWrapper<${entity}>(entity));
+        return ResponseBuilder.success(dataList);
+    }
+
+    @ApiOperation(value="$!{table.comment} 分页查询",notes="", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/query/page", method = {RequestMethod.GET, RequestMethod.POST})
+    public R<Page<${entity}>> queryPage( @ApiParam(value = "页数",required = false) @RequestParam(name = "pageNo", defaultValue = "1") int pageNo,
+                                                    @ApiParam(value = "页码",required = false) @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+                                                    ${entity} entity ) throws BusinessException {
+        Page<${entity}> dataPage = service.selectPage(new Page<${entity}>(pageNo, pageSize), new EntityWrapper(entity));
+        return ResponseBuilder.success(dataPage);
+    }
+
+    @ApiOperation(value = "删除(多个用“,” 隔开))", notes = "")
+    @DeleteMapping(value = "/{id}")
+    public R<${entity}> delete(@PathVariable String id) {
+        if(StringUtils.isNotBlank(id)){
+            service.deleteBatchIds(Arrays.asList(id.split("," )));
+        }
+        return ResponseBuilder.success();
+    }
+
+    @ApiOperation(value = "批量保存或者修改", notes = "")
+    @PostMapping(value = "/batch/insertOrUpdate")
+    public R<List<${entity}>> insertOrUpdateBatch(@RequestBody List<${entity}> entities) {
+        service.insertOrUpdateBatch(entities);
+        return ResponseBuilder.success(entities);
+    }
+
+
+}
+
+#end
