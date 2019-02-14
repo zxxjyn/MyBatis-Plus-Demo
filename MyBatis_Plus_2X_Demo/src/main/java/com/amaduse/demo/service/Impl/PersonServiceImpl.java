@@ -5,6 +5,7 @@ import com.amaduse.demo.dao.PersonDao;
 import com.amaduse.demo.service.PersonService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -14,7 +15,8 @@ import org.springframework.stereotype.Service;
  * @author yezifeng
  * @since 2019-02-12
  */
-@Service
+@Service("PersonService")
+@Transactional
 public class PersonServiceImpl extends ServiceImpl<PersonDao, Person> implements PersonService {
 
 

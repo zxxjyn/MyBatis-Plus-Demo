@@ -1,11 +1,21 @@
 package ${package.Controller};
 
+import com.tcl.multimedia.nretail.central.ability.message.web.common.BusinessException;
+import com.tcl.multimedia.nretail.central.ability.message.web.common.ResponseBuilder;
+import com.tcl.multimedia.nretail.central.ability.message.api.vo.R;
+
 import org.springframework.http.MediaType;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.apache.commons.lang.StringUtils;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+
+import java.util.List;
+import java.util.Arrays;
 
 import ${package.Entity}.${entity};
 import ${package.Service}.${table.serviceName};

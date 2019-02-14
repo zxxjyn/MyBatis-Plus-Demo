@@ -1,4 +1,4 @@
-package com.amaduse.demo;
+package com.amaduse.demo.UnityTest;
 
 
 import com.baomidou.mybatisplus.generator.AutoGenerator;

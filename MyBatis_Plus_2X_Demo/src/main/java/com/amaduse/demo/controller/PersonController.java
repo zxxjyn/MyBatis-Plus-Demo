@@ -29,15 +29,14 @@ import org.springframework.stereotype.Controller;
  * @author xin.zheng
  * @since 2019-02-13
  */
-@Api(tags = "测试用户表")//tags value 取得是注解
+//@Api(tags = "测试用户表")//tags value 取得是注解
 @Controller
 @RequestMapping("/person")
-//暂时swagger显示数据有错误提示，后续解决。
 public class PersonController {
 
-//    @Autowired
-//    private PersonService service;
-//
+    @Autowired
+    private PersonService service;
+
 //    @ApiOperation(value="测试用户表 查询",notes="", produces = MediaType.APPLICATION_JSON_VALUE)
 //    @RequestMapping(value = "/query/list", method = {RequestMethod.GET, RequestMethod.POST})
 //    public String query( Person entity ) {
